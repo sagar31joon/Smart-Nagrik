@@ -315,8 +315,9 @@ export async function fetchAccountability(wardId) {
 
 /** Subscribe to new issues */
 export function subscribeToIssues(onInsert) {
+  const channelName = `issues-realtime-${Math.random().toString(36).substring(2, 11)}`;
   return supabase
-    .channel('issues-realtime')
+    .channel(channelName)
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'issues' }, payload => {
       onInsert(payload.new);
     })
@@ -328,8 +329,9 @@ export function subscribeToIssues(onInsert) {
 
 /** Subscribe to upvote changes */
 export function subscribeToUpvotes(onUpvote) {
+  const channelName = `upvotes-realtime-${Math.random().toString(36).substring(2, 11)}`;
   return supabase
-    .channel('upvotes-realtime')
+    .channel(channelName)
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'upvotes' }, payload => {
       onUpvote(payload.new);
     })
